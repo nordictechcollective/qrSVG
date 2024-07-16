@@ -1,0 +1,55 @@
+
+[build-system]
+requires = ["setuptools-scm[toml]>=7", "setuptools>=65"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qrSVG"
+description = ""
+dynamic = ["version"]
+
+requires-python = ">=3.12"
+dependencies = [ #
+    "CairoSVG",
+    "qrcode",
+    "pillow",
+    "numpy",
+]
+
+[project.optional-dependencies]
+dev = [ #
+    "mypy",
+    "pre-commit",
+    "ruff",
+    "textual-dev",
+]
+
+[tool.setuptools_scm]
+
+[tool.setuptools.packages.find]
+namespaces = false
+where = ["src"]
+
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [ # 
+    "B",
+    "C",
+    "E",
+    "F",
+    "G",
+    "I",
+    "Q",
+    "W",
+    "UP",
+    "PL",
+    "RUF",
+    "FLY",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = true
