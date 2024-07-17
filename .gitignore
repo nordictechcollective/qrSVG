@@ -1,6 +1,9 @@
-.*cache
-*venv/
-.vscode
-*.svg
-*.pyc
 *.egg-info
+*.pyc
+*.svg
+*venv/
+.*cache
+.tox
+.vscode
+!docs/*.svg
+!test/svg/*.svg

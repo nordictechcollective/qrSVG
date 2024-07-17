@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qrSVG"
-description = ""
+description = "QR Code SVG generator"
 dynamic = ["version"]
 
 requires-python = ">=3.12"
@@ -14,6 +14,7 @@ dependencies = [ #
     "qrcode",
     "pillow",
     "numpy",
+    "inquirer",
 ]
 
 [project.optional-dependencies]
@@ -22,7 +23,11 @@ dev = [ #
     "pre-commit",
     "ruff",
     "textual-dev",
+    "tox",
 ]
+
+[project.scripts]
+qrsvg = "qrSVG.cli:main"
 
 [tool.setuptools_scm]
 
@@ -35,7 +40,7 @@ where = ["src"]
 line-length = 120
 
 [tool.ruff.lint]
-select = [ # 
+select = [ #
     "B",
     "C",
     "E",
