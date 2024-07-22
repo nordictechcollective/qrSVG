@@ -11,16 +11,18 @@ dynamic = ["version"]
 requires-python = ">=3.12"
 dependencies = [ #
     "CairoSVG",
-    "qrcode",
-    "pillow",
-    "numpy",
     "inquirer",
+    "numpy",
+    "opencv-python",
+    "pillow",
+    "qrcode",
 ]
 
 [project.optional-dependencies]
 dev = [ #
     "mypy",
     "pre-commit",
+    "pytest",
     "ruff",
     "textual-dev",
     "tox",
@@ -28,6 +30,7 @@ dev = [ #
 
 [project.scripts]
 qrsvg = "qrSVG.cli:main"
+qrsvg-meta = "qrSVG.diff:metadata"
 
 [tool.setuptools_scm]
 
@@ -45,14 +48,14 @@ select = [ #
     "C",
     "E",
     "F",
+    "FLY",
     "G",
     "I",
-    "Q",
-    "W",
-    "UP",
     "PL",
+    "Q",
     "RUF",
-    "FLY",
+    "UP",
+    "W",
 ]
 
 [tool.mypy]

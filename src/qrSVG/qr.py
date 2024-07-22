@@ -1,37 +1,28 @@
 from __future__ import annotations
 
+from functools import cached_property
 from pathlib import Path
-from tempfile import NamedTemporaryFile
 from xml.etree import ElementTree as ET
 
 import numpy as np
-from cairosvg import svg2png
-from PIL import Image, ImageFilter
-from qrcode.image.styles.moduledrawers import svg as SvgDrawer
-from qrcode.image.svg import SvgImage
-from qrcode.main import QRCode
+from PIL import ImageFilter
 
 from qrSVG.containers import CorrectionLevel, Offset, Size, ViewBox
+from qrSVG.image import data2tree, svg2pil
 
 UNIT = "mm"  # TODO: This is not working with other units
 
 
 class QR:
     def __init__(self, data, error_correction: CorrectionLevel = CorrectionLevel.H):
-        qr = QRCode(
-            error_correction=error_correction.value,
-            border=4,
-        )
-        qr.add_data(str(data))
-        image = qr.make_image(
-            image_factory=SvgImage,
-            module_drawer=SvgDrawer.SvgCircleDrawer(),
-        )
-        self.tree = ET.fromstring(image.to_string())
+        self._data = str(data)
+        self.tree = data2tree(self._data, error_correction)
 
+    @cached_property
+    def size(self) -> Size:
         ET.register_namespace("", "http://www.w3.org/2000/svg")
         root: ET.Element = self.tree.find(".")  # type: ignore
-        self.size = Size.from_string(
+        return Size.from_string(
             height=root.attrib["height"],
             width=root.attrib["width"],
             unit=UNIT,
@@ -106,22 +97,9 @@ class QR:
 
         return Size(width=width, height=height, unit=size.unit)
 
-    def _svg2image(self, path: Path, height: int, width: int):
-        """Convert SVG to PIL image."""
-        png = svg2png(
-            url=str(path),
-            output_height=height,
-            output_width=width,
-        )
-        with NamedTemporaryFile(suffix=".png", delete=False, delete_on_close=False) as f:
-            output = Path(f.name)
-            output.write_bytes(png)  # type: ignore
-            img = Image.open(output)
-        return img
-
     def _logo_mask(self, path: Path, logo: Size, offset: Offset, blur: float = 0, margin: int = 0) -> np.ndarray:  # noqa: PLR0913
         """Create a 2D array to be used as image reference."""
-        img = self._svg2image(
+        img = svg2pil(
             path=path,
             height=int(logo.height) + 2 * margin,
             width=int(logo.width) + 2 * margin,

@@ -2,14 +2,14 @@
 
 Create qr codes in SVG format.
 
-# Examples
+## Examples
 
-## [vcard](examples/vcard.py)
+### [vcard](examples/vcard.py)
 
 ```python
 from pathlib import Path
 
-from qrSVG.qr import QR
+from qrSVG.qr import QR, CorrectionLevel
 from qrSVG.vcard import VCard
 
 # Create a new VCard object
@@ -22,28 +22,28 @@ vcard.add_url("http://www.bubbagump.com")
 vcard.add_note("life is like a box of chocolates")
 
 # Create a QRCode object
-qr = QR(vcard)
-qr.save(Path("vcard.svg"))
+qr = QR(
+    vcard,
+    CorrectionLevel.M,
+)
 qr.add_logo(
     Path(__file__).parent.with_name("test") / "svg" / "Bubba_Gump_logo.svg",
-    margin=2,
+    margin=1,
 )
 qr.save(Path(__file__).parent.with_name("docs") / "vcard.svg")
 ```
 
 ![vcard example](docs/vcard.svg)
 
-## [url](examples/url.py)
+### [url](examples/url.py)
 
 ```python
 from pathlib import Path
 
 from qrSVG.qr import QR
 
-url = "https://www.youtube.com/watch?v=xvFZjo5PgG0"
-
-# Create a QRCode object
-qr = QR(url)
+# Create a QRCode
+qr = QR("https://www.youtube.com/watch?v=xvFZjo5PgG0")
 qr.add_logo(
     Path(__file__).parent.with_name("test") / "svg" / "rick.svg",
     scale=0.4,

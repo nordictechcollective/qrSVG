@@ -1,9 +1,10 @@
+.*cache
+.tox
+.vscode
 *.egg-info
 *.pyc
 *.svg
 *venv/
-.*cache
-.tox
-.vscode
+build/
 !docs/*.svg
 !test/svg/*.svg
